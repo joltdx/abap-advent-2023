@@ -1,4 +1,4 @@
-# Advent of Code 2023 in ABAP3
+# Advent of Code 2023 in ABAP
 These are my solutions in ABAP to the Advent of Code 2023
 
 Code written and run on my ABAP Developer Edition 1909 docker

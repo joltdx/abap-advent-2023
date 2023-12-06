@@ -25,6 +25,13 @@ CLASS zcl_advent_2023_06 DEFINITION
       RETURNING
         VALUE(result) TYPE int8.
 
+    METHODS get_num_ways_to_win_math
+      IMPORTING
+        time          TYPE int8
+        dist          TYPE int8
+      RETURNING
+        VALUE(result) TYPE int8.
+
 ENDCLASS.
 
 
@@ -49,8 +56,8 @@ CLASS zcl_advent_2023_06 IMPLEMENTATION.
     LOOP AT times ASSIGNING FIELD-SYMBOL(<time>) FROM 2.
       ASSIGN dists[ sy-tabix ] TO FIELD-SYMBOL(<dist>).
 
-      DATA(num_ways_to_win) = get_num_ways_to_win( time = CONV #( <time> )
-                                                   dist = CONV #( <dist> ) ).
+      DATA(num_ways_to_win) = get_num_ways_to_win_math( time = CONV #( <time> )
+                                                        dist = CONV #( <dist> ) ).
 
       multiplied *= num_ways_to_win.
 
@@ -70,14 +77,17 @@ CLASS zcl_advent_2023_06 IMPLEMENTATION.
     CONDENSE input_line NO-GAPS.
     SPLIT input_line AT ':' INTO DATA(header_dist) DATA(dist).
 
-    DATA(num_ways_to_win) = get_num_ways_to_win( time = CONV #( time )
-                                                 dist = CONV #( dist ) ).
+    DATA(num_ways_to_win) = get_num_ways_to_win_math( time = CONV #( time )
+                                                      dist = CONV #( dist ) ).
 
     result = num_ways_to_win.
 
   ENDMETHOD.
 
   METHOD get_num_ways_to_win.
+
+    " Somewhat bruteforceish way of solving.
+    " Replaced by mathematical way, but kept this method here anyway...
 
     DATA too_slow TYPE i.
     DATA too_fast TYPE i.
@@ -98,6 +108,34 @@ CLASS zcl_advent_2023_06 IMPLEMENTATION.
       ENDIF.
       EXIT.
     ENDDO.
+
+    result = too_fast - too_slow + 1.
+
+  ENDMETHOD.
+
+  METHOD get_num_ways_to_win_math.
+
+    " Well, on second thought, this is just an andragradsekvation and easily solved with math :)
+
+    DATA(a) = - 1.
+    DATA(b) = time.
+    DATA(c) = - dist.
+
+    DATA(d) = sqrt( abs( b * b - 4 * a * c ) ).
+
+    DATA(too_slow) = ( - b + d ) / ( 2 * a ).
+    IF frac( too_slow ) = 0.
+      too_slow = too_slow + 1.
+    ELSE.
+      too_slow = ceil( too_slow ).
+    ENDIF.
+
+    DATA(too_fast) = ( - b - d ) / ( 2 * a ).
+    IF frac( too_fast ) = 0.
+      too_fast = too_fast - 1.
+    ELSE.
+      too_fast = floor( too_fast ).
+    ENDIF.
 
     result = too_fast - too_slow + 1.
 

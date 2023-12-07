@@ -24,39 +24,31 @@ CLASS ltcl_test IMPLEMENTATION.
 
   METHOD part_1.
 
-    DATA(part_1_result) = cut->part_1(
-VALUE #(
-( || )
-( || )
-( || )
-( || )
-( || )
-( || )
-( || )
-( || )
+    DATA(part_1_result) = cut->part_1( VALUE #(
+( |32T3K 765| )
+( |T55J5 684| )
+( |KK677 28 | )
+( |KTJJT 220| )
+( |QQQJA 483| )
 ) ).
 
     cl_abap_unit_assert=>assert_equals( act = part_1_result
-                                        exp = |todo| ).
+                                        exp = 6440 ).
 
   ENDMETHOD.
 
   METHOD part_2.
 
-    DATA(part_2_result) = cut->part_2(
-VALUE #(
-( || )
-( || )
-( || )
-( || )
-( || )
-( || )
-( || )
-( || )
+    DATA(part_2_result) = cut->part_2( VALUE #(
+( |32T3K 765| )
+( |T55J5 684| )
+( |KK677 28 | )
+( |KTJJT 220| )
+( |QQQJA 483| )
 ) ).
 
     cl_abap_unit_assert=>assert_equals( act = part_2_result
-                                        exp = |todo| ).
+                                        exp = 5905 ).
 
   ENDMETHOD.
 

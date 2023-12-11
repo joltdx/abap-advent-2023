@@ -5,11 +5,12 @@ CLASS ltcl_test DEFINITION
   FINAL.
 
   PRIVATE SECTION.
-    DATA cut TYPE REF TO zif_advent_2023.
+    DATA cut TYPE REF TO zcl_advent_2023_11.
 
     METHODS setup.
     METHODS part_1 FOR TESTING.
-    METHODS part_2 FOR TESTING.
+    METHODS part_2_10 FOR TESTING.
+    METHODS part_2_100 FOR TESTING.
 
 ENDCLASS.
 
@@ -24,39 +25,65 @@ CLASS ltcl_test IMPLEMENTATION.
 
   METHOD part_1.
 
-    DATA(part_1_result) = cut->part_1(
-VALUE #(
-( || )
-( || )
-( || )
-( || )
-( || )
-( || )
-( || )
-( || )
+    DATA(part_1_result) = cut->part_1( VALUE #(
+( |...#......| )
+( |.......#..| )
+( |#.........| )
+( |..........| )
+( |......#...| )
+( |.#........| )
+( |.........#| )
+( |..........| )
+( |.......#..| )
+( |#...#.....| )
 ) ).
 
     cl_abap_unit_assert=>assert_equals( act = part_1_result
-                                        exp = |todo| ).
+                                        exp = 374 ).
 
   ENDMETHOD.
 
-  METHOD part_2.
+  METHOD part_2_10.
 
-    DATA(part_2_result) = cut->part_2(
-VALUE #(
-( || )
-( || )
-( || )
-( || )
-( || )
-( || )
-( || )
-( || )
+    cut = NEW zcl_advent_2023_11( expansion_constant = 10 ).
+
+    DATA(part_2_result) = cut->part_2( VALUE #(
+( |...#......| )
+( |.......#..| )
+( |#.........| )
+( |..........| )
+( |......#...| )
+( |.#........| )
+( |.........#| )
+( |..........| )
+( |.......#..| )
+( |#...#.....| )
 ) ).
 
     cl_abap_unit_assert=>assert_equals( act = part_2_result
-                                        exp = |todo| ).
+                                        exp = 1030 ).
+
+  ENDMETHOD.
+
+  METHOD part_2_100.
+
+    cut = NEW zcl_advent_2023_11( expansion_constant = 100 ).
+
+    DATA(part_2_result) = cut->part_2( VALUE #(
+( |...#......| )
+( |.......#..| )
+( |#.........| )
+( |..........| )
+( |......#...| )
+( |.#........| )
+( |.........#| )
+( |..........| )
+( |.......#..| )
+( |#...#.....| )
+) ).
+
+    cl_abap_unit_assert=>assert_equals( act = part_2_result
+                                        exp = 8410 ).
 
   ENDMETHOD.
 

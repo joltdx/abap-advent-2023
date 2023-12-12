@@ -16,11 +16,20 @@ CLASS zcl_advent_2023_12 DEFINITION
     TYPES ty_combinations TYPE STANDARD TABLE OF ty_c_20 WITH EMPTY KEY.
 
     TYPES:
+      BEGIN OF ty_saved_combinations,
+        width        TYPE i,
+        number       TYPE i,
+        combinations TYPE ty_combinations,
+      END OF ty_saved_combinations.
+
+    TYPES:
       BEGIN OF ty_arrangement,
         springs TYPE string,
         groups  TYPE STANDARD TABLE OF i WITH EMPTY KEY,
       END OF ty_arrangement.
     TYPES ty_arrangements_tt TYPE STANDARD TABLE OF ty_arrangement WITH EMPTY KEY.
+
+    DATA saved_combinations TYPE HASHED TABLE OF ty_saved_combinations WITH UNIQUE KEY width number.
 
     METHODS get_possible_arrangements
       IMPORTING
@@ -34,12 +43,20 @@ CLASS zcl_advent_2023_12 DEFINITION
       RETURNING
         VALUE(result) TYPE ty_arrangements_tt.
 
+    METHODS get_combinations
+      IMPORTING
+        width         TYPE i
+        number        TYPE i
+      RETURNING
+        VALUE(result) TYPE ty_combinations.
+
     METHODS generate_combinations
       IMPORTING
         combination  TYPE ty_c_20
         width        TYPE i
         number       TYPE i
         offset       TYPE i
+        num_damaged  TYPE i
       CHANGING
         combinations TYPE ty_combinations.
 
@@ -121,13 +138,17 @@ CLASS zcl_advent_2023_12 IMPLEMENTATION.
     DATA combination TYPE ty_c_20.
     combination = |{ '' WIDTH = count_unknown PAD = '.' }|.
 
-    DATA combinations TYPE STANDARD TABLE OF ty_c_20 WITH EMPTY KEY.
-    CLEAR combinations.
-    generate_combinations( EXPORTING combination  = combination
-                                     width        = count_unknown
-                                     number       = damaged_missing
-                                     offset       = 0
-                           CHANGING  combinations = combinations ).
+*    DATA combinations TYPE STANDARD TABLE OF ty_c_20 WITH EMPTY KEY.
+*    CLEAR combinations.
+*    generate_combinations( EXPORTING combination  = combination
+*                                     width        = count_unknown
+*                                     number       = damaged_missing
+*                                     offset       = 0
+*                                     num_damaged  = 0
+*                           CHANGING  combinations = combinations ).
+
+    DATA(combinations) = get_combinations( width  = count_unknown
+                                           number = damaged_missing ).
 
     LOOP AT combinations ASSIGNING FIELD-SYMBOL(<combination>).
 
@@ -199,26 +220,61 @@ CLASS zcl_advent_2023_12 IMPLEMENTATION.
     ENDIF.
 
     this_combo+offset(1) = '#'.
-    FIND ALL OCCURRENCES OF '#' IN this_combo MATCH COUNT DATA(count).
-    IF count = number.
+    DATA(new_count) = num_damaged + 1.
+    IF new_count = number.
       APPEND this_combo TO combinations.
-*      RETURN.
     ENDIF.
 
-    IF count < number.
+*    READ TABLE saved_combinations WITH KEY width = width number = number ASSIGNING FIELD-SYMBOL(<combinations>).
+*    IF sy-subrc = 0.
+*      INSERT LINES OF <combinations>-combinations INTO TABLE combinations.
+*    ELSE.
+
+      IF new_count < number.
+        generate_combinations( EXPORTING combination  = this_combo
+                                         width        = width
+                                         number       = number
+                                         offset       = offset + 1
+                                         num_damaged  = new_count
+                               CHANGING  combinations = combinations ).
+      ENDIF.
+
+      this_combo+offset(1) = '.'.
       generate_combinations( EXPORTING combination  = this_combo
                                        width        = width
                                        number       = number
                                        offset       = offset + 1
+                                       num_damaged  = num_damaged
                              CHANGING  combinations = combinations ).
-    ENDIF.
+*    ENDIF.
+  ENDMETHOD.
 
-    this_combo+offset(1) = '.'.
-    generate_combinations( EXPORTING combination  = this_combo
-                                     width        = width
-                                     number       = number
-                                     offset       = offset + 1
-                           CHANGING  combinations = combinations ).
+  METHOD get_combinations.
+
+    DATA combinations TYPE STANDARD TABLE OF ty_c_20 WITH EMPTY KEY.
+
+    READ TABLE saved_combinations WITH KEY width = width number = number ASSIGNING FIELD-SYMBOL(<combinations>).
+    IF sy-subrc = 0.
+      result = <combinations>-combinations.
+    ELSE.
+
+      DATA combination TYPE ty_c_20.
+      combination = |{ '' WIDTH = width PAD = '.' }|.
+
+      generate_combinations( EXPORTING combination  = combination
+                                       width        = width
+                                       number       = number
+                                       offset       = 0
+                                       num_damaged  = 0
+                             CHANGING  combinations = combinations ).
+
+      INSERT VALUE #( width        = width
+                      number       = number
+                      combinations = combinations ) INTO TABLE saved_combinations.
+
+      result = combinations.
+
+    ENDIF.
 
   ENDMETHOD.
 

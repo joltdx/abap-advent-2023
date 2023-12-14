@@ -24,39 +24,43 @@ CLASS ltcl_test IMPLEMENTATION.
 
   METHOD part_1.
 
-    DATA(part_1_result) = cut->part_1(
-VALUE #(
-( || )
-( || )
-( || )
-( || )
-( || )
-( || )
-( || )
-( || )
+    DATA(part_1_result) = cut->part_1( VALUE #(
+( |O....#....| )
+( |O.OO#....#| )
+( |.....##...| )
+( |OO.#O....O| )
+( |.O.....O#.| )
+( |O.#..O.#.#| )
+( |..O..#O..O| )
+( |.......O..| )
+( |#....###..| )
+( |#OO..#....| )
 ) ).
 
     cl_abap_unit_assert=>assert_equals( act = part_1_result
-                                        exp = |todo| ).
+                                        exp = 136 ).
 
   ENDMETHOD.
 
   METHOD part_2.
 
-    DATA(part_2_result) = cut->part_2(
-VALUE #(
-( || )
-( || )
-( || )
-( || )
-( || )
-( || )
-( || )
-( || )
+    DATA(part_2_result) = cut->part_2( VALUE #(
+( |O....#....| )
+( |O.OO#....#| )
+( |.....##...| )
+( |OO.#O....O| )
+( |.O.....O#.| )
+( |O.#..O.#.#| )
+( |..O..#O..O| )
+( |.......O..| )
+( |#....###..| )
+( |#OO..#....| )
 ) ).
 
+*    cl_abap_unit_assert=>assert_equals( act = part_2_result
+*                                        exp = 64 ).
     cl_abap_unit_assert=>assert_equals( act = part_2_result
-                                        exp = |todo| ).
+                                        exp = 64 ).
 
   ENDMETHOD.
 

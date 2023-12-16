@@ -24,39 +24,41 @@ CLASS ltcl_test IMPLEMENTATION.
 
   METHOD part_1.
 
-    DATA(part_1_result) = cut->part_1(
-VALUE #(
-( || )
-( || )
-( || )
-( || )
-( || )
-( || )
-( || )
-( || )
+    DATA(part_1_result) = cut->part_1( VALUE #(
+( `.|...\....` )
+( `|.-.\.....` )
+( `.....|-...` )
+( `........|.` )
+( `..........` )
+( `.........\` )
+( `..../.\\..` )
+( `.-.-/..|..` )
+( `.|....-|.\` )
+( `..//.|....` )
 ) ).
 
     cl_abap_unit_assert=>assert_equals( act = part_1_result
-                                        exp = |todo| ).
+                                        exp = 46 ).
 
   ENDMETHOD.
 
   METHOD part_2.
 
-    DATA(part_2_result) = cut->part_2(
-VALUE #(
-( || )
-( || )
-( || )
-( || )
-( || )
-( || )
-( || )
-( || )
+    DATA(part_2_result) = cut->part_2( VALUE #(
+( `.|...\....` )
+( `|.-.\.....` )
+( `.....|-...` )
+( `........|.` )
+( `..........` )
+( `.........\` )
+( `..../.\\..` )
+( `.-.-/..|..` )
+( `.|....-|.\` )
+( `..//.|....` )
 ) ).
 
     cl_abap_unit_assert=>assert_equals( act = part_2_result
-                                        exp = |todo| ).
+                                        exp = 51 ).
 
   ENDMETHOD.
 

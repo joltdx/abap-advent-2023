@@ -329,6 +329,7 @@ CLASS zcl_advent_2023_23 IMPLEMENTATION.
       END OF ty_queue.
 
     DATA queue TYPE STANDARD TABLE OF ty_queue WITH EMPTY KEY.
+    DATA visited TYPE HASHED TABLE OF ty_queue WITH UNIQUE KEY node.
     DATA neighbors TYPE ty_neighbors_tt.
     DATA path TYPE ty_neighbors_tt.
 
@@ -341,6 +342,14 @@ CLASS zcl_advent_2023_23 IMPLEMENTATION.
       DATA(previous_node) = queue[ 1 ]-previous_node.
       DELETE queue INDEX 1.
 
+      IF line_exists( visited[ node          = current
+                               previous_node = previous_node ] ).
+        CONTINUE.
+      ELSE.
+        INSERT VALUE #( node          = current
+                        previous_node = previous_node ) INTO TABLE visited.
+      ENDIF.
+
       DATA(current_cost) = 0.
 
       DATA(intersection) = get_neighbors( node          = VALUE #( x = current-x y = current-y )
@@ -350,15 +359,10 @@ CLASS zcl_advent_2023_23 IMPLEMENTATION.
       ENDIF.
 
       LOOP AT intersection ASSIGNING FIELD-SYMBOL(<intersection>).
-*        DATA(neighbors) = get_neighbors( node          = VALUE #( x = current-x y = current-y )
-*                                         previous_node = previous_node ).
-
-*        WHILE lines( neighbors ) = 1.
         neighbors = VALUE #( ( <intersection> ) ).
         previous_node = current.
         current_cost = 0.
         DO.
-*          APPEND LINES OF neighbors TO path.
           APPEND <intersection> TO path.
           DATA(this_neighbor) = neighbors[ 1 ].
 

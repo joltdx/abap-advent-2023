@@ -10,6 +10,7 @@ CLASS ltcl_test DEFINITION
     METHODS setup.
     METHODS part_1 FOR TESTING.
     METHODS part_2 FOR TESTING.
+    METHODS part_2_2 FOR TESTING.
 
 ENDCLASS.
 
@@ -45,22 +46,43 @@ CLASS ltcl_test IMPLEMENTATION.
 
   ENDMETHOD.
 
+
   METHOD part_2.
 
     DATA(part_2_result) = cut->part_2( VALUE #(
-( || )
-( || )
-( || )
-( || )
-( || )
-( || )
-( || )
-( || )
+( |2413432311323| )
+( |3215453535623| )
+( |3255245654254| )
+( |3446585845452| )
+( |4546657867536| )
+( |1438598798454| )
+( |4457876987766| )
+( |3637877979653| )
+( |4654967986887| )
+( |4564679986453| )
+( |1224686865563| )
+( |2546548887735| )
+( |4322674655533| )
 ) ).
 
     cl_abap_unit_assert=>assert_equals( act = part_2_result
-                                        exp = |todo| ).
+                                        exp = 94 ).
 
   ENDMETHOD.
 
+
+  METHOD part_2_2.
+
+    DATA(part_2_result) = cut->part_2( VALUE #(
+( |111111111111| )
+( |999999999991| )
+( |999999999991| )
+( |999999999991| )
+( |999999999991| )
+) ).
+
+    cl_abap_unit_assert=>assert_equals( act = part_2_result
+                                        exp = 71 ).
+
+  ENDMETHOD.
 ENDCLASS.

@@ -96,7 +96,7 @@ CLASS ltcl_test IMPLEMENTATION.
 ) ).
 
     cl_abap_unit_assert=>assert_equals( act = part_2_result
-                                        exp = |todo| ).
+                                        exp = 525152 ).
 
   ENDMETHOD.
 

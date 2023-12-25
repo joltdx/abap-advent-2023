@@ -24,39 +24,47 @@ CLASS ltcl_test IMPLEMENTATION.
 
   METHOD part_1.
 
-    DATA(part_1_result) = cut->part_1(
-VALUE #(
-( || )
-( || )
-( || )
-( || )
-( || )
-( || )
-( || )
-( || )
+    DATA(part_1_result) = cut->part_1( VALUE #(
+( |jqt: rhn xhk nvd| )
+( |rsh: frs pzl lsr| )
+( |xhk: hfx| )
+( |cmg: qnr nvd lhk bvb| )
+( |rhn: xhk bvb hfx| )
+( |bvb: xhk hfx| )
+( |pzl: lsr hfx nvd| )
+( |qnr: nvd| )
+( |ntq: jqt hfx bvb xhk| )
+( |nvd: lhk| )
+( |lsr: lhk| )
+( |rzs: qnr cmg lsr rsh| )
+( |frs: qnr lhk lsr| )
 ) ).
 
     cl_abap_unit_assert=>assert_equals( act = part_1_result
-                                        exp = |todo| ).
+                                        exp = 54 ).
 
   ENDMETHOD.
 
   METHOD part_2.
 
-    DATA(part_2_result) = cut->part_2(
-VALUE #(
-( || )
-( || )
-( || )
-( || )
-( || )
-( || )
-( || )
-( || )
+    DATA(part_2_result) = cut->part_2( VALUE #(
+( |jqt: rhn xhk nvd| )
+( |rsh: frs pzl lsr| )
+( |xhk: hfx| )
+( |cmg: qnr nvd lhk bvb| )
+( |rhn: xhk bvb hfx| )
+( |bvb: xhk hfx| )
+( |pzl: lsr hfx nvd| )
+( |qnr: nvd| )
+( |ntq: jqt hfx bvb xhk| )
+( |nvd: lhk| )
+( |lsr: lhk| )
+( |rzs: qnr cmg lsr rsh| )
+( |frs: qnr lhk lsr| )
 ) ).
 
     cl_abap_unit_assert=>assert_equals( act = part_2_result
-                                        exp = |todo| ).
+                                        exp = |there is no part 2| ).
 
   ENDMETHOD.
 
